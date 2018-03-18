@@ -1,4 +1,4 @@
-package com.coderetreat.component;
+package com.coderetreat.controller;
 
 import java.util.PriorityQueue;
 
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
+import com.codereteat.pojo.Cell;
 import com.codereteat.pojo.GridMap;
 
 public class Play implements ApplicationRunner{
@@ -18,7 +19,7 @@ public class Play implements ApplicationRunner{
 		
 		gm.initialize(7,7);
 		
-		//add live cells as starter
+		//mock some live cells as starter
 		createStarter(gm);
 		
 		//first scan add live cells to LiveQ
@@ -28,7 +29,7 @@ public class Play implements ApplicationRunner{
 			{
 				if(gm.isALive(i, j))
 				{
-					//TO DO count neight live 
+					//TO DO count neightbour live 
 					
 				}
 					
@@ -61,9 +62,32 @@ public class Play implements ApplicationRunner{
 	
 	private int getLiveNeighbourCount(int rowIndex, int columnIndex)
 	{
-		int count = 0;
-		
-		return count;
+		int liveCount = 0;
+		if((rowIndex -1) == 0)
+		{
+			//cell is left most
+			if((columnIndex -1) == 0)
+			{
+				//cell is up most
+				if(gm.isALive(rowIndex+1, columnIndex))
+					liveCount++;		
+				if(gm.isALive(rowIndex, columnIndex +1))
+					liveCount ++;
+				if(gm.isALive(rowIndex+1, columnIndex +1))
+					liveCount ++;
+				
+			}
+			else
+			{
+				if(gm.isALive(rowIndex+1, columnIndex))
+					liveCount++;				
+				if(gm.isALive(rowIndex, columnIndex +1))
+					liveCount ++;
+				if(gm.isALive(rowIndex+1, columnIndex +1))
+					liveCount ++;
+			}
+		}
+		return liveCount;
 	}
 	
 	public void createStarter(GridMap gm)
