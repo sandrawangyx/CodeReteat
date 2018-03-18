@@ -7,11 +7,11 @@ public class GridMap {
 	public int size;
 	private Cell[][] map ;
 
-	public GridMap(int row, int column) {
+	public GridMap() {
 		//super();
-		this.row = row;
-		this.column = column;
-		this.size = row*column;
+		this.row = 0;
+		this.column = 0;
+		this.size = 0;
 	}
 
 	public int getRow() {
@@ -27,19 +27,24 @@ public class GridMap {
 		this.column = column;
 	}
 	public int getSize() {
+		this.size = this.row * this.column;
 		return size;
-	}
-	public void setSize(int size) {
-		this.size = size;
 	}
 
 	public Class<? extends Cell> getCellClass(int row, int column)
 	{
 		return this.map[row][column].getClass();
 	}
-
-	public void initialize()
+	
+	public boolean isALive(int row, int column)
 	{
+		return this.map[row][column].getClass() == LiveCell.class;
+	}
+
+	public void initialize(int row, int column)
+	{
+		this.row = row;
+		this.column = column;
 		this.map= new Cell[this.row][this.column];
 		for(int i=0;i<row; i++)
 		{
