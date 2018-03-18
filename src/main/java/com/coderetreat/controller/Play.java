@@ -13,15 +13,15 @@ public class Play implements ApplicationRunner{
 
 	@Autowired
 	GridMap gm;
-	
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		
+
 		gm.initialize(7,7);
-		
+
 		//mock some live cells as starter
 		createStarter(gm);
-		
+
 		//first scan add live cells to LiveQ
 		for(int i =0; i< gm.getRow(); i++)
 		{
@@ -30,13 +30,13 @@ public class Play implements ApplicationRunner{
 				if(gm.isALive(i, j))
 				{
 					//TO DO count neightbour live 
-					
+
 				}
-					
+
 			}
 		}		
 	}
-	
+
 	private boolean isUnderPopulation(int rowIndex, int columnIndex)
 	{
 		if(getLiveNeighbourCount(rowIndex, columnIndex) <= 2)
@@ -44,7 +44,7 @@ public class Play implements ApplicationRunner{
 		else
 			return false;
 	}
-	
+
 	private boolean isOverPopulation(int rowIndex, int columnIndex)
 	{
 		if(getLiveNeighbourCount(rowIndex, columnIndex) > 3 )
@@ -52,44 +52,31 @@ public class Play implements ApplicationRunner{
 		else
 			return false;
 	}
-	
+
 	private void cellReprodution(GridMap gm, int rowIndex, int columnIndex)
 	{
 		if(!gm.isALive(rowIndex, columnIndex) && getLiveNeighbourCount(rowIndex, columnIndex)==3)
-			
+
 			gm.transitCell(rowIndex, columnIndex);
 	}
-	
+
 	private int getLiveNeighbourCount(int rowIndex, int columnIndex)
 	{
 		int liveCount = 0;
-		if((rowIndex -1) == 0)
+		for(int i = -1; i <=1; i++)
 		{
-			//cell is left most
-			if((columnIndex -1) == 0)
+			for(int j = -1; j<=1; j++)
 			{
-				//cell is up most
-				if(gm.isALive(rowIndex+1, columnIndex))
-					liveCount++;		
-				if(gm.isALive(rowIndex, columnIndex +1))
-					liveCount ++;
-				if(gm.isALive(rowIndex+1, columnIndex +1))
-					liveCount ++;
-				
-			}
-			else
-			{
-				if(gm.isALive(rowIndex+1, columnIndex))
-					liveCount++;				
-				if(gm.isALive(rowIndex, columnIndex +1))
-					liveCount ++;
-				if(gm.isALive(rowIndex+1, columnIndex +1))
-					liveCount ++;
+				if((gm.getCellClass(rowIndex+i, columnIndex +j) != null )
+						&& gm.isALive(rowIndex +i, columnIndex +j) 
+						&& (i!=0) && (j!=0))
+					liveCount++;
+
 			}
 		}
 		return liveCount;
 	}
-	
+
 	public void createStarter(GridMap gm)
 	{
 		gm.transitCell(1, 2);
